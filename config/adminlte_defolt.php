@@ -141,13 +141,12 @@ return [
             'url'  => 'admin/settings',
             'icon' => 'fas fa-fw fa-lock',
         ],
-        ['header' => 'ПРАВА ДОСТУПА'],
-        [
-            'text' => 'Роли и разрешения',
-            'url'  => 'roles-permissions',
-            'icon' => 'fas fa-fw fa-user',
-        ],
         ['header' => 'ГЛАВНОЕ МЕНЮ'],
+        [
+            'text' => 'blog',
+            'url'  => 'admin/blog',
+            'can'  => 'manage-blog',
+        ],
         [
             'text'        => 'Задачи',
             'url'         => 'tasks',
@@ -156,48 +155,55 @@ return [
             'label_color' => 'success',
         ],
         [
-            'text'       => 'Выполненные',
-            'url'         => 'tasks?tasks=completed',
-            'icon_color' => 'aqua',
+            'text'    => 'multilevel',
+            'icon'    => 'fas fa-fw fa-share',
             'submenu' => [
                 [
-                    'text'       => 'В срок',
-                    'url'         => 'tasks?tasks=completed-in',
-                    'icon_color' => 'aqua',
+                    'text' => 'level_one',
+                    'url'  => '#',
                 ],
                 [
-                    'text'       => 'Дольше срока',
-                    'url'         => 'tasks?tasks=completed-out',
-                    'icon_color' => 'green',
+                    'text'    => 'level_one',
+                    'url'     => '#',
+                    'submenu' => [
+                        [
+                            'text' => 'level_two',
+                            'url'  => '#',
+                        ],
+                        [
+                            'text'    => 'level_two',
+                            'url'     => '#',
+                            'submenu' => [
+                                [
+                                    'text' => 'level_three',
+                                    'url'  => '#',
+                                ],
+                                [
+                                    'text' => 'level_three',
+                                    'url'  => '#',
+                                ],
+                            ],
+                        ],
+                    ],
                 ],
                 [
-                    'text'       => 'Выполненные частично',
-                    'url'         => 'tasks?tasks=completed-part',
-                    'icon_color' => 'yellow',
+                    'text' => 'level_one',
+                    'url'  => '#',
                 ],
             ],
         ],
+        ['header' => 'labels'],
         [
-            'text'       => 'Невыполненные',
-            'url'         => 'tasks?tasks=not-completed',
+            'text'       => 'important',
             'icon_color' => 'red',
-            'submenu' => [
-                [
-                    'text'       => 'Текущие',
-                    'url'         => 'tasks?tasks=not-completed-in',
-                    'icon_color' => 'aqua',
-                ],
-                [
-                    'text'       => 'Истёкшие',
-                    'url'         => 'tasks?tasks=not-completed-out',
-                    'icon_color' => 'red',
-                ],
-            ]
         ],
         [
-            'text'       => 'Отменённые',
-            'url'         => 'tasks?tasks=canceled',
+            'text'       => 'warning',
             'icon_color' => 'yellow',
+        ],
+        [
+            'text'       => 'information',
+            'icon_color' => 'aqua',
         ],
     ],
 

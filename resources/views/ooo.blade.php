@@ -9,3 +9,4 @@
 @section('content')
     <p>Добро пожаловать!</p>
 @stop
+                                   

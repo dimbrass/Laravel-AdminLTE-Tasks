@@ -17,17 +17,14 @@ class RolesTableSeeder extends Seeder
        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
        $manager_permissions = [
-           'user-list',
-           'user-permission-add',
-           'user-permission-delete',
-           'user-role-add',
-           'user-role-delete',
+           'worker-list',
+           'worker-add',
+           'worker-comment',
+           'worker-delete',
 
-           'task-list',
-           'task-create',
-           'task-edit',
-           'task-execute',
-           'task-delete',
+           'worker-task-list',
+           'worker-task-add',
+           'worker-task-delete',
         ];
 
        $worker_permissions = [
@@ -36,6 +33,9 @@ class RolesTableSeeder extends Seeder
            'task-edit',
            'task-execute',
            'task-delete',
+
+           'task-report',
+           'task-rm',
         ];
 
         $role = Role::create(['name' => 'admin'])
