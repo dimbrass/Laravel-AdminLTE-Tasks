@@ -13,17 +13,17 @@ class UserRolesTableSeeder extends Seeder
     {
         DB::table('userroles')->insert([
             'id' => '1',
-            'admin' => 'true',
+            'admin' => true,
         ]);
 
         DB::table('userroles')->insert([
             'id' => '2',
-            'manager' => 'true',
+            'manager' => true,
         ]);
 
         DB::table('userroles')->insert([
             'id' => '3',
-            'worker' => 'true',
+            'worker' => true,
         ]);
     }
 }

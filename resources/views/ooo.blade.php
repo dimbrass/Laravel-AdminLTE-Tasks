@@ -7,6 +7,5 @@
 @stop
 
 @section('content')
-    <p>Добро пожаловать!</p>
+    <p>ооооооо!</p>
 @stop
-                                   

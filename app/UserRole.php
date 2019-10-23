@@ -8,7 +8,7 @@ class UserRole extends Model
 {
     public $timestamps = false;
 
-  // Ïîëó÷èòü ïîëüçîâàòåëÿ - âëàäåëüöà äàííîé çàïèñè ðîëåé
+  // ÐŸÐ¾Ð»ÑƒÑ‡Ð¸Ñ‚ÑŒ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»Ñ - Ð²Ð»Ð°Ð´ÐµÐ»ÑŒÑ†Ð° Ð´Ð°Ð½Ð½Ð¾Ð¹ Ð·Ð°Ð¿Ð¸ÑÐ¸ Ñ€Ð¾Ð»ÐµÐ¹
   public function user()
   {
     return $this->hasOne('App\User');
