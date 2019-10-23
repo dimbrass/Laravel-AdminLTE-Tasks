@@ -39,10 +39,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    // Получить роли пользователя 
-    public function role()
+    // Получить роли пользователя
+    public function userrole()
     {
-    return $this->hasOne('App\Role');
+    return $this->hasOne('App\UserRole');
     }
 
 }

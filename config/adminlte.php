@@ -138,7 +138,7 @@ return [
         ],
         [
             'text' => 'Сменить пароль',
-            'url'  => 'admin/settings',
+            'url'  => 'resetpassword',
             'icon' => 'fas fa-fw fa-lock',
         ],
         ['header' => 'ПРАВА ДОСТУПА'],
