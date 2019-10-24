@@ -21,6 +21,10 @@ Route::get('/home', function() {
     return view('home');
 })->name('home')->middleware('auth');
 
-Route::get('/ooo', function() {
-    return view('ooo');
-})->name('ooo')->middleware('auth');
+Route::get('roles-permissions', function() {
+    return view('admin/roles-permissions');
+})->name('roles-permissions')->middleware('auth');
+
+Route::get('template', function() {
+    return view('template');
+})->name('template')->middleware('auth');
