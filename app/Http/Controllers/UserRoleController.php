@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 class UserRoleController extends Controller
 {
     /**
-    * Создание нового экземпляра контроллера.
+    * РЎРѕР·РґР°РЅРёРµ РЅРѕРІРѕРіРѕ СЌРєР·РµРјРїР»СЏСЂР° РєРѕРЅС‚СЂРѕР»Р»РµСЂР°.
     *
     * @return void
     */

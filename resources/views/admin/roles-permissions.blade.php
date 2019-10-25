@@ -31,10 +31,7 @@
                 </div>
             </div>
 
-            <div class="box-body">
-                <!-- Отображение ошибок проверки ввода -->
-                @include('common.errors')
-
+            <div class="box-body">                 
                 Pace loading works automatically on page. You can still implement it with ajax requests by adding this js:
                 <br><code>$(document).ajaxStart(function() { Pace.restart(); });</code>
                 <br>
