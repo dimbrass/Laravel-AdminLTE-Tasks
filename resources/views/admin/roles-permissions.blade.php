@@ -9,6 +9,9 @@
 @section('content')
 
         <div class="box">
+            <!-- Отображение ошибок проверки ввода -->
+            @include('common.errors')
+
             <div class="box-header with-border">
                 <h3 class="box-title">Title</h3>
 
@@ -31,19 +34,7 @@
                 </div>
             </div>
 
-            <div class="box-body">                 
-                Pace loading works automatically on page. You can still implement it with ajax requests by adding this js:
-                <br><code>$(document).ajaxStart(function() { Pace.restart(); });</code>
-                <br>
-                <div class="row">
-                    <div class="col-xs-12 text-center">
-                        <button type="button" class="btn btn-default btn-lrg ajax" title="Ajax Request">
-                            <i class="fa fa-spin fa-refresh"></i>&nbsp; Get External Content
-                        </button>
-                    </div>
-                </div>
-                <div class="ajax-content"><hr>Ajax Request Completed !</div>
-
+            <div class="box-body">
                 <div class="box-body table-responsive no-padding">
                     <table class="table table-hover" style="z-index: 1;">
                         <tbody>
@@ -53,9 +44,10 @@
                                 <th style="text-align: right">Status</th>
                             </tr>
 
-                            <tr style="max-height: 11px !important; position: relative;">
-                                <td>183</td>
-                                <td>John Doe</td>
+                            @foreach ($users as $user)
+                            <tr>
+                                <td>{{ $user->id }}</td>
+                                <td>{{ $user->name }}</td>
                                 <td style="text-align: right">
                                     <form name="role-perm-table" action="">
                                         <div class="btn-group">
@@ -88,9 +80,23 @@
                                     </form>
                                 </td>
                             </tr>
+                            @endforeach
+
                         </tbody>
                     </table>
                 </div>
+
+                Pace loading works automatically on page. You can still implement it with ajax requests by adding this js:
+                <br><code>$(document).ajaxStart(function() { Pace.restart(); });</code>
+                <br>
+                <div class="row">
+                    <div class="col-xs-12 text-center">
+                        <button type="button" class="btn btn-default btn-lrg ajax" title="Ajax Request">
+                            <i class="fa fa-spin fa-refresh"></i>&nbsp; Get External Content
+                        </button>
+                    </div>
+                </div>
+                <div class="ajax-content"><hr>Ajax Request Completed !</div>
 
             </div>
 

@@ -16,9 +16,9 @@ class CreateUserRolesTable extends Migration
         Schema::create('userroles', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('user_id')->unsigned()->index()->default('3');
-            $table->boolean('admin')->default(false);
-            $table->boolean('manager')->default(false);
-            $table->boolean('worker')->default(false);
+            $table->integer('admin')->default('0');
+            $table->integer('manager')->default('0');
+            $table->integer('worker')->default('0');
         });
     }
 

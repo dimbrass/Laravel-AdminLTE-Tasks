@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\UserRole;
+use App\User;
 
 class UserRoleController extends Controller
 {
@@ -23,7 +25,9 @@ class UserRoleController extends Controller
      */
     public function index()
     {
-      return view('roles-permissions.index');
+      $users = User::all();
+      $userroles = UserRole::all();
+      return view('admin.roles-permissions', ['userroles' => $userroles, 'users' => $users]);
     }
 
     /**
