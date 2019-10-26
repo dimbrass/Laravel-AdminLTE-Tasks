@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\UserRole;
 use App\User;
@@ -23,11 +25,17 @@ class UserRoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-      $users = User::all();
-      $userroles = UserRole::all();
-      return view('admin.roles-permissions', ['userroles' => $userroles, 'users' => $users]);
+      $role = $request->role;
+      if ($role == 'all') $users = User::all();
+      else $users = DB::table('users')
+                    ->join('userroles', function ($join) use ($role) {
+                        $join->on('users.id', '=', 'userroles.user_id')
+                             ->where("userroles.$role", '>', 0);
+                    })
+                    ->get();
+      return view('admin.roles-permissions', ['users' => $users, 'role' => $role]);
     }
 
     /**

@@ -144,22 +144,51 @@ return [
         ['header' => 'ПРАВА ДОСТУПА'],
         [
             'text' => 'Роли и разрешения',
-            'url'  => 'roles-permissions',
             'icon' => 'fas fa-fw fa-user',
+            'icon_color' => 'white',
+            'submenu' => [
+                [
+                    'text'       => 'Все',
+                    'url'  => 'roles-permissions?role=all',
+                    'icon' => 'fas fa-fw fa-user',
+                    'icon_color' => 'white',
+                ],
+                [
+                    'text'       => 'Исполнители',
+                    'url'  => 'roles-permissions?role=worker',
+                    'icon' => 'fas fa-fw fa-user',
+                    'icon_color' => 'aqua',
+                ],
+                [
+                    'text'       => 'Менеджеры',
+                    'url'  => 'roles-permissions?role=manager',
+                    'icon' => 'fas fa-fw fa-user',
+                    'icon_color' => 'green',
+                ],
+                [
+                    'text'       => 'Администраторы',
+                    'url'  => 'roles-permissions?role=admin',
+                    'icon' => 'fas fa-fw fa-user',
+                    'icon_color' => 'yellow',
+                ],
+            ],
         ],
-        ['header' => 'ГЛАВНОЕ МЕНЮ'],
+        ['header' => 'ЗАДАЧИ'],
         [
             'text'        => 'Задачи',
             'url'         => 'tasks',
-            'icon'        => 'far fa-file',
             'label'       => 4,
             'label_color' => 'success',
         ],
         [
             'text'       => 'Выполненные',
-            'url'         => 'tasks?tasks=completed',
             'icon_color' => 'aqua',
             'submenu' => [
+                [
+                    'text'       => 'Все',
+                    'url'         => 'tasks?tasks=completed',
+                    'icon_color' => 'white',
+                ],
                 [
                     'text'       => 'В срок',
                     'url'         => 'tasks?tasks=completed-in',
@@ -179,9 +208,13 @@ return [
         ],
         [
             'text'       => 'Невыполненные',
-            'url'         => 'tasks?tasks=not-completed',
             'icon_color' => 'red',
             'submenu' => [
+                [
+                    'text'       => 'Все',
+                    'url'         => 'tasks?tasks=not-completed',
+                    'icon_color' => 'white',
+                ],
                 [
                     'text'       => 'Текущие',
                     'url'         => 'tasks?tasks=not-completed-in',

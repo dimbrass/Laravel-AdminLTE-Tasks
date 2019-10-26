@@ -34,7 +34,7 @@
                 </div>
             </div>
 
-            <div class="box-body">
+            <div class="box-body">                                          
                 <div class="box-body table-responsive no-padding">
                     <table class="table table-hover" style="z-index: 1;">
                         <tbody>
