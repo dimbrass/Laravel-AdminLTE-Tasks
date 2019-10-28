@@ -49,7 +49,7 @@
                                 <td>{{ $user->id }}</td>
                                 <td>{{ $user->name }}</td>
                                 <td style="text-align: right">
-                                    <form name="role-perm-table" action="">
+                                    <form name="role-perm-table" class="role-perm-table" action="">
                                         @if ($user->admin)
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default">Admin</button>
@@ -78,9 +78,9 @@
                                                 <span class="sr-only">Toggle Dropdown</span>
                                             </button>
                                             <ul class="dropdown-menu" role="menu" style="z-index: 0; position: absolute; margin-left: -15px;">
-                                                <li><a href="?user_id={{ $user->id }}&role=admin">Admin</a></li>
-                                                <li><a href="?user_id={{ $user->id }}&role=manager">Manager</a></li>
-                                                <li><a href="?user_id={{ $user->id }}&role=worker">Worker</a></li>
+                                                <li><a href="/addrole/addrole.php?user_id={{ $user->id }}&role=admin">Admin</a></li>
+                                                <li><a href="/addrole/addrole.php?user_id={{ $user->id }}&role=manager">Manager</a></li>
+                                                <li><a href="/addrole/addrole.php?user_id={{ $user->id }}&role=worker">Worker</a></li>
                                             </ul>
                                         </div>
                                     </form>
@@ -92,37 +92,16 @@
                     </table>
                 </div>
 
-
-
-<div class="trigger">Trigger</div>
-<div class="result"></div>
-<div class="log"></div>
-
-<script>
-$( document ).ajaxStart(function() {
-    $( ".log" ).text( "Triggered ajaxStart handler." );
-});
-$( ".trigger" ).click(function() {          alert('oooooooo');
-   /// $( ".result" ).load( "index.php" );
-});
-</script>
-
-
-
-
-
-
-                Pace loading works automatically on page. You can still implement it with ajax requests by adding this js:
-                <br><code>$(document).ajaxStart(function() { Pace.restart(); });</code>
-                <br>
-                <div class="row">
-                    <div class="col-xs-12 text-center">
-                        <button type="button" class="btn btn-default btn-lrg ajax" title="Ajax Request">
-                            <i class="fa fa-spin fa-refresh"></i>&nbsp; Get External Content
-                        </button>
-                    </div>
-                </div>
-                <div class="ajax-content"><hr>Ajax Request Completed !</div>
+                <div class="result"></div>
+                <script>
+                $('body').on('click', 'form.role-perm-table a', function(event)  {
+                    event.preventDefault();
+                    $.get($(this).attr('href'), function(data) {
+                        alert("Data Loaded: " + data);
+                    });
+                    //alert($(this).attr('href'));
+                });
+                </script>
 
             </div>
 
