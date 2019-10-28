@@ -34,7 +34,7 @@
                 </div>
             </div>
 
-            <div class="box-body">                                          
+            <div class="box-body">
                 <div class="box-body table-responsive no-padding">
                     <table class="table table-hover" style="z-index: 1;">
                         <tbody>
@@ -50,20 +50,26 @@
                                 <td>{{ $user->name }}</td>
                                 <td style="text-align: right">
                                     <form name="role-perm-table" action="">
+                                        @if ($user->admin)
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default">Admin</button>
                                             <button name="role" value="del-admin" type="button" class="btn btn-danger">X</button>
                                         </div>
+                                        @endif
                                                                     &nbsp;
+                                        @if ($user->manager)
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default">Manager</button>
                                             <button name="role" value="del-manager" type="button" class="btn btn-danger">X</button>
                                         </div>
+                                        @endif
                                                                     &nbsp;
+                                        @if ($user->worker)
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default">Worker</button>
                                             <button name="role" value="del-worker" type="button" class="btn btn-danger">X</button>
                                         </div>
+                                        @endif
                                                                     &nbsp;
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default">Добавить роль</button>
@@ -72,9 +78,9 @@
                                                 <span class="sr-only">Toggle Dropdown</span>
                                             </button>
                                             <ul class="dropdown-menu" role="menu" style="z-index: 0; position: absolute; margin-left: -15px;">
-                                                <li><a href="#">Admin</a></li>
-                                                <li><a href="#">Manager</a></li>
-                                                <li><a href="#">Worker</a></li>
+                                                <li><a href="?user_id={{ $user->id }}&role=admin">Admin</a></li>
+                                                <li><a href="?user_id={{ $user->id }}&role=manager">Manager</a></li>
+                                                <li><a href="?user_id={{ $user->id }}&role=worker">Worker</a></li>
                                             </ul>
                                         </div>
                                     </form>
@@ -85,6 +91,26 @@
                         </tbody>
                     </table>
                 </div>
+
+
+
+<div class="trigger">Trigger</div>
+<div class="result"></div>
+<div class="log"></div>
+
+<script>
+$( document ).ajaxStart(function() {
+    $( ".log" ).text( "Triggered ajaxStart handler." );
+});
+$( ".trigger" ).click(function() {          alert('oooooooo');
+   /// $( ".result" ).load( "index.php" );
+});
+</script>
+
+
+
+
+
 
                 Pace loading works automatically on page. You can still implement it with ajax requests by adding this js:
                 <br><code>$(document).ajaxStart(function() { Pace.restart(); });</code>

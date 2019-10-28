@@ -27,15 +27,12 @@ class UserRoleController extends Controller
      */
     public function index(Request $request)
     {
+      $users = DB::table('users')->join('userroles', 'users.id', '=', 'userroles.user_id')->get();
+
       $role = $request->role;
-      if ($role == 'all') $users = User::all();
-      else $users = DB::table('users')
-                    ->join('userroles', function ($join) use ($role) {
-                        $join->on('users.id', '=', 'userroles.user_id')
-                             ->where("userroles.$role", '>', 0);
-                    })
-                    ->get();
-      return view('admin.roles-permissions', ['users' => $users, 'role' => $role]);
+      if ($role <> 'all') $users->where("userroles.$role", '>', 0)->get();
+
+      return view('admin.roles-permissions', ['users' => $users]);
     }
 
     /**
