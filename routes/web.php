@@ -24,9 +24,7 @@ Route::get('/home', function() {
 Route::get('template', function() {
     return view('template');
 })->name('template')->middleware('auth');
-/*
-Route::get('roles-permissions', function() {
-    return view('admin/roles-permissions');
-})->name('roles-permissions')->middleware('auth');
-*/
+
 Route::get('/roles-permissions', 'UserRoleController@index');
+
+Route::post('/addrole', 'EditUserRolesController@addrole');

@@ -50,6 +50,8 @@
                                 <td>{{ $user->name }}</td>
                                 <td style="text-align: right">
                                     <form name="role-perm-table" class="role-perm-table" action="">
+                                        {{ csrf_field() }}
+
                                         @if ($user->admin)
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default">Admin</button>
@@ -78,11 +80,15 @@
                                                 <span class="sr-only">Toggle Dropdown</span>
                                             </button>
                                             <ul class="dropdown-menu" role="menu" style="z-index: 0; position: absolute; margin-left: -15px;">
-                                                <li><a href="/addrole/addrole.php?user_id={{ $user->id }}&role=admin">Admin</a></li>
-                                                <li><a href="/addrole/addrole.php?user_id={{ $user->id }}&role=manager">Manager</a></li>
-                                                <li><a href="/addrole/addrole.php?user_id={{ $user->id }}&role=worker">Worker</a></li>
+                                                <li><a href="/addrole/?user_id={{ $user->id }}&role=admin">Admin</a></li>
+                                                <li><a href="/ajax/addrole/?user_id={{ $user->id }}&role=manager">Manager</a></li>
+                                                <li><a href="/ajax/addrole.php/?user_id={{ $user->id }}&role=worker">Worker</a></li>
                                             </ul>
                                         </div>
+                    <li><a href="/addrole/?user_id={{ $user->id }}&role=admin">Admin</a></li>
+                    <li><a href="/ajax/addrole/?user_id={{ $user->id }}&role=manager">Manager</a></li>
+                    <li><a href="/ajax/addrole.php/?user_id={{ $user->id }}&role=worker">Worker</a></li>
+
                                     </form>
                                 </td>
                             </tr>
@@ -92,15 +98,34 @@
                     </table>
                 </div>
 
-                <div class="result"></div>
                 <script>
-                $('body').on('click', 'form.role-perm-table a', function(event)  {
-                    event.preventDefault();
-                    $.get($(this).attr('href'), function(data) {
-                        alert("Data Loaded: " + data);
+                $(document).ready(function () {
+                    $('form.role-perm-table a').on('click', function (e) {
+                        e.preventDefault();
+                        $.ajax({
+                            type: 'POST',
+                            url: '/addrole',                                         //  $(this).attr('href')
+                            //data: $('form.role-perm-table').serialize(),
+                            data:{name:'name'},
+                            success:function(data){
+                              alert(data.success);
+                              }
+                        });
+
+                        $.post($(this).attr('href'), function(data) {
+                            alert("Data Loaded: " + data);
+                        });                                                     // alert($(this).attr('href'));
                     });
-                    //alert($(this).attr('href'));
+
+
                 });
+
+
+
+/*                $('body').on('click', 'form.role-perm-table a', function(event)  {
+                    event.preventDefault();
+                    //alert($(this).attr('href'));
+                });*/
                 </script>
 
             </div>

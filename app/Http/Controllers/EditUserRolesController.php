@@ -2,22 +2,15 @@
 
 namespace App\Http\Controllers;
 
-
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use App\UserRole;
-use App\User;
 
-class UserRoleController extends Controller
+class EditUserRolesController extends Controller
 {
-    /**
-    * Создание нового экземпляра контроллера.
-    *
-    * @return void
-    */
-    public function __construct()
+
+    public function addrole()
     {
-    $this->middleware('auth');
+        return 'yyyyyyyyyyyyyy';
+
     }
 
     /**
@@ -25,22 +18,7 @@ class UserRoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
-    {
-      $users = DB::table('users')->join('userroles', 'users.id', '=', 'userroles.user_id')->get();
-
-      $role = $request->role;
-      if ($role <> 'all') $users->where("userroles.admin", '>', 0)->get();
-
-      return view('admin.roles-permissions', ['users' => $users]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function index()
     {
         //
     }
