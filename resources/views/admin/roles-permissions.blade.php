@@ -49,31 +49,31 @@
                                 <td>{{ $user->id }}</td>
                                 <td>{{ $user->name }}</td>
                                 <td style="text-align: right">
-                                    <form name="role-perm-table" class="role-perm-table" action="">
+                                    <form name="role-perm-table" class="role-perm-table" action="" id="rptbl-bttn-{{ $user->id }}">
 
                                         <meta name="csrf-token" content="{{ csrf_token() }}">
 
                                         @if ($user->admin)
-                                        <div class="btn-group" id="rptbl-bttn-admin-{{ $user->id }}">
+                                        <div class="btn-group">
                                             <button type="button" class="btn btn-default">Admin</button>
                                             <button name="role" value="del-admin" type="button" class="btn btn-danger">X</button>
                                         </div>
                                         @endif
-                                                                    &nbsp;
+
                                         @if ($user->manager)
-                                        <div class="btn-group" id="rptbl-bttn-manager-{{ $user->id }}">
+                                        <div class="btn-group">
                                             <button type="button" class="btn btn-default">Manager</button>
                                             <button name="role" value="del-manager" type="button" class="btn btn-danger">X</button>
                                         </div>
                                         @endif
-                                                                    &nbsp;
+
                                         @if ($user->worker)
-                                        <div class="btn-group" id="rptbl-bttn-worker-{{ $user->id }}">
+                                        <div class="btn-group">
                                             <button type="button" class="btn btn-default">Worker</button>
                                             <button name="role" value="del-worker" type="button" class="btn btn-danger">X</button>
                                         </div>
                                         @endif
-                                                                    &nbsp;
+                                                                  
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default">Добавить роль</button>
                                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -95,10 +95,11 @@
                     </table>
                 </div>
 
+                <div class="inner">222222</div>
+
                 <script>
                 $(document).ready(function () {
-                    $('form.role-perm-table a').on('click', function (e) {   // alert($(this).attr('href'));
-                        // use the tocken in the header http request
+                    $('form.role-perm-table a').on('click', function (e) {
                         $.ajaxSetup({
                             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
                         });
@@ -108,14 +109,16 @@
                                 type: 'POST',
                                 url: link,
                                 dataType: 'json',
-                                data:{ link },
+                                data: { link },
                                 success: function(data) {
-                                    alert(data.success);
-                                    console.log(data);
+var str = '<div class="btn-group"><button type="button" class="btn btn-default">' + data.role + '</button><button name="role" value="del-worker" type="button" class="btn btn-danger">X</button></div>';
+                                    //alert(data.success);
+                                    $( "#rptbl-bttn-" + data.user_id ).prepend(str);
+                                    //console.log(data);
                                 },
                                 error: function (msg) {
                                     alert(data.error);
-                                    console.log(data);
+                                    //console.log(data);
                                 }
                         });
                     });
