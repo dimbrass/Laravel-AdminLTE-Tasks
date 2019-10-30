@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class EditUserRolesController extends Controller
 {
-    public function add()
+    public function add(Request $request)
     {
-        return response()->json(['success'=>'Got Simple Ajax Request.']);
+        $user_id = $request->user_id;
+        $role    = $request->role;
+
+        $result = DB::table('userroles')->where('user_id', $user_id)->update([$role => '1']);
+
+        return response()->json(['success'=> $result, 'error'=>'error']);
     }
 }

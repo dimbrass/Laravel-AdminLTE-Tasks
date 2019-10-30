@@ -50,20 +50,29 @@
                                 <td>{{ $user->name }}</td>
                                 <td style="text-align: right">
                                     <form name="role-perm-table" class="role-perm-table" action="">
-                                        <div class="btn-group">
+
+                                        <meta name="csrf-token" content="{{ csrf_token() }}">
+
+                                        @if ($user->admin)
+                                        <div class="btn-group" id="rptbl-bttn-admin-{{ $user->id }}">
                                             <button type="button" class="btn btn-default">Admin</button>
                                             <button name="role" value="del-admin" type="button" class="btn btn-danger">X</button>
                                         </div>
+                                        @endif
                                                                     &nbsp;
-                                        <div class="btn-group">
+                                        @if ($user->manager)
+                                        <div class="btn-group" id="rptbl-bttn-manager-{{ $user->id }}">
                                             <button type="button" class="btn btn-default">Manager</button>
                                             <button name="role" value="del-manager" type="button" class="btn btn-danger">X</button>
                                         </div>
+                                        @endif
                                                                     &nbsp;
-                                        <div class="btn-group">
+                                        @if ($user->worker)
+                                        <div class="btn-group" id="rptbl-bttn-worker-{{ $user->id }}">
                                             <button type="button" class="btn btn-default">Worker</button>
                                             <button name="role" value="del-worker" type="button" class="btn btn-danger">X</button>
                                         </div>
+                                        @endif
                                                                     &nbsp;
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default">Добавить роль</button>
@@ -72,9 +81,9 @@
                                                 <span class="sr-only">Toggle Dropdown</span>
                                             </button>
                                             <ul class="dropdown-menu" role="menu" style="z-index: 0; position: absolute; margin-left: -15px;">
-                                                <li><a href="edituserroles/add/?role=admin">Admin</a></li>
-                                                <li><a href="edituserroles/add/?role=manager">Manager</a></li>
-                                                <li><a href="edituserroles/add/?role=worker">Worker</a></li>
+                                                <li><a href="edituserroles/add/?user_id={{ $user->id }}&role=admin">Admin</a></li>
+                                                <li><a href="edituserroles/add/?user_id={{ $user->id }}&role=manager">Manager</a></li>
+                                                <li><a href="edituserroles/add/?user_id={{ $user->id }}&role=worker">Worker</a></li>
                                             </ul>
                                         </div>
                                     </form>
@@ -89,15 +98,26 @@
                 <script>
                 $(document).ready(function () {
                     $('form.role-perm-table a').on('click', function (e) {   // alert($(this).attr('href'));
-                            e.preventDefault();
-                            $.ajax({
-                                    type: 'POST',
-                                    url: $(this).attr('href'),
-                                    data:{name:'name'},
-                                    success:function(data){
-                                        alert(data.success);
-                                        }
-                            });
+                        // use the tocken in the header http request
+                        $.ajaxSetup({
+                            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
+                        });
+                        var link = $(this).attr('href');
+                        e.preventDefault();
+                        $.ajax({
+                                type: 'POST',
+                                url: link,
+                                dataType: 'json',
+                                data:{ link },
+                                success: function(data) {
+                                    alert(data.success);
+                                    console.log(data);
+                                },
+                                error: function (msg) {
+                                    alert(data.error);
+                                    console.log(data);
+                                }
+                        });
                     });
                 });
                 </script>
