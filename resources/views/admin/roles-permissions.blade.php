@@ -56,24 +56,24 @@
                                         @if ($user->admin)
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default">Admin</button>
-                                            <button name="role" value="del-admin" type="button" class="btn btn-danger">X</button>
+                                            <button name="{{ $user->id }}" id="admin-{{ $user->id }}" value="admin" type="button" class="btn btn-danger">X</button>
                                         </div>
                                         @endif
 
                                         @if ($user->manager)
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default">Manager</button>
-                                            <button name="role" value="del-manager" type="button" class="btn btn-danger">X</button>
+                                            <button name="{{ $user->id }}" id="manager-{{ $user->id }}" value="manager" type="button" class="btn btn-danger">X</button>
                                         </div>
                                         @endif
 
                                         @if ($user->worker)
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default">Worker</button>
-                                            <button name="role" value="del-worker" type="button" class="btn btn-danger">X</button>
+                                            <button name="{{ $user->id }}" id="worker-{{ $user->id }}" value="worker" type="button" class="btn btn-danger">X</button>
                                         </div>
                                         @endif
-                                                                  
+
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default">Добавить роль</button>
                                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -95,30 +95,45 @@
                     </table>
                 </div>
 
-                <div class="inner">222222</div>
-
                 <script>
                 $(document).ready(function () {
-                    $('form.role-perm-table a').on('click', function (e) {
-                        $.ajaxSetup({
-                            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
+                    $.ajaxSetup({
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
+                    });
+
+                    $('form.role-perm-table button.btn-danger').on('click', function (e)
+                    {
+                        var link = 'edituserroles/del/?user_id='+ this.name +'&role='+this.value;     // alert(link);
+                        e.preventDefault();
+                        $.ajax({
+                            type: 'POST',
+                            url: link,
+                          //  data: 'role=this.value&user_id=this.name',
+                            success: function(data){
+                                //alert(data);
+                                $( ".btn-group #"+data ).parent().remove();
+                            }
                         });
-                        var link = $(this).attr('href');
+
+                    });
+
+                    $('form.role-perm-table a').on('click', function (e) {
+                        var link = $(this).attr('href');                                             //  alert(link);
                         e.preventDefault();
                         $.ajax({
                                 type: 'POST',
                                 url: link,
                                 dataType: 'json',
                                 data: { link },
-                                success: function(data) {
-var str = '<div class="btn-group"><button type="button" class="btn btn-default">' + data.role + '</button><button name="role" value="del-worker" type="button" class="btn btn-danger">X</button></div>';
-                                    //alert(data.success);
-                                    $( "#rptbl-bttn-" + data.user_id ).prepend(str);
-                                    //console.log(data);
+                                success: function(data) {                                            //alert(data.success);
+var newbttn = '<div class="btn-group"><button type="button" class="btn btn-default">' + data.role + '</button><button name="role" id="'+ data.user_id +'" value="' + data.role + '" type="button" class="btn btn-danger">X</button></div>';
+                                if (data.success == 1)
+                                    $( "#rptbl-bttn-" + data.user_id ).prepend(newbttn);
+                                //console.log(data);
                                 },
                                 error: function (msg) {
-                                    alert(data.error);
-                                    //console.log(data);
+                                alert(data.error);
+                                //console.log(data);
                                 }
                         });
                     });

@@ -32,3 +32,11 @@ Route::get('roles-permissions', function() {
 Route::get('/roles-permissions', 'UserRoleController@index');
 
 Route::get('/edituserroles/add', 'EditUserRolesController@add');
+Route::get('/edituserroles/del', 'EditUserRolesController@del');
+
+
+
+
+
+
+

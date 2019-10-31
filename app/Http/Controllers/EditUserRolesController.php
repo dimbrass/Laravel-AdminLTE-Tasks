@@ -14,6 +14,16 @@ class EditUserRolesController extends Controller
 
         $result = DB::table('userroles')->where('user_id', $user_id)->update([$role => '1']);
 
-        return response()->json(['success'=> $result, 'role'=>$role, 'user_id'=>$user_id, 'error'=>'error']);
+        return response()->json(['success'=> $result, 'error'=>'error', 'role'=>$role, 'user_id'=>$user_id]);
+    }
+
+    public function del(Request $request)
+    {
+        $user_id = $request->user_id;
+        $role    = $request->role;
+
+        $result = DB::table('userroles')->where('user_id', $user_id)->update([$role => '0']);
+
+        return $role.'-'.$user_id;        // response()->json(['success'=> $result, 'error'=>'error', 'role'=>$role, 'user_id'=>$user_id]);
     }
 }
