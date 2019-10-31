@@ -109,8 +109,7 @@
                             type: 'POST',
                             url: link,
                           //  data: 'role=this.value&user_id=this.name',
-                            success: function(data){
-                                //alert(data);
+                            success: function(data){     
                                 $( ".btn-group #"+data ).parent().remove();
                             }
                         });

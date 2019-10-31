@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserRole extends Model
 {
-    public $timestamps = false;        
+    public $timestamps = false;
+    
+    protected $table = 'userroles';
 
     protected $fillable = ['worker'];
 
