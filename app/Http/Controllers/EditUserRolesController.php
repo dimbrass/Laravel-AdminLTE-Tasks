@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class EditUserRolesController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function add(Request $request)
     {
         $user_id = $request->user_id;

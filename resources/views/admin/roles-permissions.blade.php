@@ -36,7 +36,7 @@
 
             <div class="box-body">                                          
                 <div class="box-body table-responsive no-padding">
-                    <table class="table table-hover" style="z-index: 1;">
+                    <table class="table table-hover roles" style="z-index: 1;">
                         <tbody>
                             <tr>
                                 <th>ID</th>
@@ -80,7 +80,7 @@
                                                 <span class="caret"></span>
                                                 <span class="sr-only">Toggle Dropdown</span>
                                             </button>
-                                            <ul class="dropdown-menu" role="menu" style="z-index: 0; position: absolute; margin-left: -15px;">
+                                            <ul class="dropdown-menu" role="menu">
                                                 <li><a href="edituserroles/add/?user_id={{ $user->id }}&role=admin">Admin</a></li>
                                                 <li><a href="edituserroles/add/?user_id={{ $user->id }}&role=manager">Manager</a></li>
                                                 <li><a href="edituserroles/add/?user_id={{ $user->id }}&role=worker">Worker</a></li>
@@ -109,7 +109,7 @@
                             type: 'POST',
                             url: link,
                           //  data: 'role=this.value&user_id=this.name',
-                            success: function(data){     
+                            success: function(data){
                                 $( ".btn-group #"+data ).parent().remove();
                             }
                         });
@@ -125,7 +125,7 @@
                                 dataType: 'json',
                                 data: { link },
                                 success: function(data) {                                            //alert(data.success);
-var newbttn = '<div class="btn-group"><button type="button" class="btn btn-default">' + data.role + '</button><button name="role" id="'+ data.user_id +'" value="' + data.role + '" type="button" class="btn btn-danger">X</button></div>';
+var newbttn = '<div class="btn-group"><button type="button" class="btn btn-default">' + data.role + '</button><button name="' + data.user_id +'" id="' + data.role + '-' + data.user_id +'" value="' + data.role + '" type="button" class="btn btn-danger">X</button></div>';
                                 if (data.success == 1)
                                     $( "#rptbl-bttn-" + data.user_id ).prepend(newbttn);
                                 //console.log(data);

@@ -30,10 +30,10 @@ Route::get('roles-permissions', function() {
 })->name('roles-permissions')->middleware('auth');
 */
 Route::get('/roles-permissions', 'UserRoleController@index');
-
 Route::get('/edituserroles/add', 'EditUserRolesController@add');
 Route::get('/edituserroles/del', 'EditUserRolesController@del');
 
+Route::get('/tasks', 'TaskController@index');
 
 
 
