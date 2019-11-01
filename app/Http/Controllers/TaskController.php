@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Task;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\UserRole;
+use App\User;
+use App\Task;
 
 class TaskController extends Controller
 {
@@ -12,9 +15,13 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+      $users = DB::table('users')->join('userroles', 'users.id', '=', 'userroles.user_id');
+      $role = $request->role;
+      if ($role <> 'all') $users->where("userroles.$role", '>', 0);
+      $users = $users->get();
+      return view('tasks.tasks', ['users' => $users]);
     }
 
     /**
