@@ -2,91 +2,100 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use App\UserRole;
-use App\User;
 use App\Task;
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
+use App\Repositories\TaskRepository;
 
 class TaskController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Экземпляр TaskRepository.
      *
-     * @return \Illuminate\Http\Response
+     * @var TaskRepository
+     */
+    protected $tasks;
+
+    /**
+     * Создание нового экземпляра контроллера.
+     *
+     * @param  TaskRepository  $tasks
+     * @return void
+     */
+    public function __construct(TaskRepository $tasks)
+    {
+        $this->middleware('auth');
+
+        $this->tasks = $tasks;
+    }
+
+    /**
+     * Отображение списка всех задач пользователя.
+     *
+     * @param  Request  $request
+     * @return Response
      */
     public function index(Request $request)
     {
-      $users = DB::table('users')->join('userroles', 'users.id', '=', 'userroles.user_id');
-      $role = $request->role;
-      if ($role <> 'all') $users->where("userroles.$role", '>', 0);
-      $users = $users->get();
-      return view('tasks.tasks', ['users' => $users]);
+        $result = $this->tasks->forUserAllAlive($request->user(), $request);
+
+        return view('tasks.index', ['tasks' => $result]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Создание новой задачи.
      *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  Request  $request
+     * @return Response
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|max:255',
+        ]);
+
+        $request->user()->tasks()->create([
+            'name' => $request->name,
+        ]);
+
+        return redirect('/tasks');
     }
 
     /**
-     * Display the specified resource.
+     * Уничтожить заданную задачу.
      *
-     * @param  \App\Task  $task
-     * @return \Illuminate\Http\Response
+     * @param  Request  $request
+     * @param  Task  $task
+     * @return Response
      */
-    public function show(Task $task)
+    public function destroy(Request $request, Task $task)
     {
-        //
+        $this->authorize('is_task_user', $task);
+
+        $task->delete();
+
+        return redirect('/tasks');
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Изменить заданную задачу.
      *
-     * @param  \App\Task  $task
-     * @return \Illuminate\Http\Response
+     * @param  Request  $request
+     * @param  Task  $task
+     * @return Response
      */
-    public function edit(Task $task)
+    public function change(Request $request, Task $task)
     {
-        //
-    }
+        $this->authorize('is_task_user', $task);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Task  $task
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Task $task)
-    {
-        //
-    }
+        if ($request->complete == 'complete') {
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Task  $task
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Task $task)
-    {
-        //
+            $task->completed_at = date('Y-m-d G:i:s');
+
+            $task->save();
+        }
+
+        return redirect('/tasks');
     }
 }

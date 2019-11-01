@@ -1,4 +1,3 @@
-
 @if (count($errors) > 0)
     <!-- Список ошибок формы -->
     <div class="alert alert-danger">

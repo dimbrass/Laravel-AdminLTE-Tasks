@@ -24,16 +24,16 @@ Route::get('/home', function() {
 Route::get('template', function() {
     return view('template');
 })->name('template')->middleware('auth');
-/*
-Route::get('roles-permissions', function() {
-    return view('admin/roles-permissions');
-})->name('roles-permissions')->middleware('auth');
-*/
+
 Route::get('/roles-permissions', 'UserRoleController@index');
 Route::get('/edituserroles/add', 'EditUserRolesController@add');
 Route::get('/edituserroles/del', 'EditUserRolesController@del');
 
+//Route::get('/tasks', 'TaskController@index');   
 Route::get('/tasks', 'TaskController@index');
+Route::post('/task', 'TaskController@store');
+Route::delete('/task/{task}', 'TaskController@destroy');
+Route::put('/task/{task}', 'TaskController@change');
 
 
 
