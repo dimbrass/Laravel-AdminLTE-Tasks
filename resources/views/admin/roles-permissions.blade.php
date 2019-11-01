@@ -96,6 +96,19 @@
                 </div>
 
                 <script>
+                function removeRole(user_id, role)
+                {
+                        var link = 'edituserroles/del/?user_id='+ user_id +'&role='+ role;    alert(link);
+                        $.ajax({
+                                type: 'POST',
+                                url: link,
+                            //  data: 'role=this.value&user_id=btn.name',
+                                success: function(data){
+                                        $( ".btn-group #"+data ).parent().remove();
+                                }
+                        });
+                };
+
                 $(document).ready(function () {
                     $.ajaxSetup({
                         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
@@ -128,6 +141,9 @@
 var newbttn = '<div class="btn-group"><button type="button" class="btn btn-default">' + data.role + '</button><button name="' + data.user_id +'" id="' + data.role + '-' + data.user_id +'" value="' + data.role + '" type="button" class="btn btn-danger">X</button></div>';
                                 if (data.success == 1)
                                     $( "#rptbl-bttn-" + data.user_id ).prepend(newbttn);
+                                    $( "#" + data.role + "-" + data.user_id ).on('click', function (e) {
+                                        removeRole(this.name, this.value);
+                                    })
                                 //console.log(data);
                                 },
                                 error: function (msg) {
