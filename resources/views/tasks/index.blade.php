@@ -1,5 +1,10 @@
+@extends('adminlte::page')
 
-@extends('layouts.app')
+@section('title', 'AdminLTE')
+
+@section('content_header')
+    <h1>Задачи</h1>
+@stop
 
 @section('content')
 
