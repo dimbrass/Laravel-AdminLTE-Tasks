@@ -40,7 +40,7 @@ class TaskController extends Controller
     {
         $result = $this->tasks->forUserAllAlive($request->user(), $request);
 
-        return view('tasks.index', ['tasks' => $result]);
+        return view('tasks.index', ['tasks' => $result, 'user' => $request->user()]);
     }
 
     /**

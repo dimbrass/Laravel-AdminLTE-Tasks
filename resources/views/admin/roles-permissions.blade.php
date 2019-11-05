@@ -55,21 +55,21 @@
 
                                         @if ($user->admin)
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-default">admin</button>
+                                            <label class="admin btn btn-default">admin</label>
                                             <button name="{{ $user->id }}" id="admin-{{ $user->id }}" value="admin" type="button" class="btn btn-danger">X</button>
                                         </div>
                                         @endif
 
                                         @if ($user->manager)
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-default">manager</button>
+                                            <label class="manager btn btn-default">manager</label>
                                             <button name="{{ $user->id }}" id="manager-{{ $user->id }}" value="manager" type="button" class="btn btn-danger">X</button>
                                         </div>
                                         @endif
 
                                         @if ($user->worker)
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-default">worker</button>
+                                            <label class="worker btn btn-default">worker</label>
                                             <button name="{{ $user->id }}" id="worker-{{ $user->id }}" value="worker" type="button" class="btn btn-danger">X</button>
                                         </div>
                                         @endif
@@ -138,7 +138,7 @@
                                 dataType: 'json',
                                 data: { link },
                                 success: function(data) {
-var newbttn = '<div class="btn-group"><button type="button" class="btn btn-default">' + data.role + '</button><button name="' + data.user_id +'" id="' + data.role + '-' + data.user_id +'" value="' + data.role + '" type="button" class="btn btn-danger">X</button></div>';
+var newbttn = '<div class="btn-group"><label type="button" class="' + data.role + ' btn btn-default">' + data.role + '</label><button name="' + data.user_id +'" id="' + data.role + '-' + data.user_id +'" value="' + data.role + '" type="button" class="btn btn-danger">X</button></div>';
                                 if (data.success == 1)
                                     $( "#rptbl-bttn-" + data.user_id ).prepend(newbttn);
                                     $( "#" + data.role + "-" + data.user_id ).on('click', function (e) {

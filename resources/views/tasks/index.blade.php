@@ -8,35 +8,112 @@
 
 @section('content')
 
-    <!-- Bootstrap шаблон... -->
 
-    <div class="panel-body">
-        <!-- Отображение ошибок проверки ввода -->
-    @include('common.errors')
 
     <!-- Форма новой задачи -->
-        <form action="{{ url('task') }}" method="POST" class="form-horizontal">
+        <form action="{{ url('task') }}" method="POST" class="row form-horizontal">
         {{ csrf_field() }}
-
         <!-- Имя задачи -->
-            <div class="form-group">
-                <label for="task" class="col-sm-3 control-label">Задача</label>
-
+               <!-- <label for="task" class="col-sm-2 control-label">Задача</label>
+-->
                 <div class="col-sm-6">
                     <input type="text" name="name" id="task-name" class="form-control">
                 </div>
-            </div>
 
-            <!-- Кнопка добавления задачи -->
-            <div class="form-group">
-                <div class="col-sm-offset-3 col-sm-6">
+                <div class="col-sm-2">
                     <button type="submit" class="btn btn-default">
                         <i class="fa fa-plus"></i> Добавить задачу
                     </button>
                 </div>
-            </div>
         </form>
+                                                         <br>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <div class="box-tools" style="width: 100%;">
+                    <div class="input-group input-group-sm hidden-xs" style="width: 100%;">
+                            <label style="float: left !important">Задача: &nbsp; </label>
+                            <input type="text" name="table_search" class="form-control pull-right" style="width: 40%; float: left !important" placeholder="Search">
+                            <div class="input-group-btn" style="float: left !important; margin-right: 55px">
+                                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                            </div>
+
+                        <div style="width: 220px; display: inline-block">
+                            <label style="float: left !important">Создана: &nbsp; </label>
+                            <input type="text" name="table_search" class="form-control pull-right" style="width: 77px; float: left !important" placeholder="Search">
+                            <div class="input-group-btn" style="float: left !important; margin-right: 55px">
+                                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+
+                        <div style="width: 220px; display: inline-block">
+                            <label style="float: left !important">Выполнена: &nbsp; </label>
+                            <input type="text" name="table_search" class="form-control pull-right" style="width: 77px; float: left !important" placeholder="Search">
+                            <div class="input-group-btn" style="float: left !important; margin-right: 55px">
+                                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                                                                           <br>
+                    <h3 class="box-title">Список задач</h3>
+
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+            <!-- Текущие задачи -->
+            @if (count($tasks) > 0)
+                <table class="table table-hover tasks">
+                    <tbody><tr>
+                        <th>ID</th>
+                        <th>Пользователь</th>
+                        <th>Создана/Заверршена</th>
+                        <th>Статус</th>
+                        <th>Задача</th>
+                        <th>Действие</th>
+                    </tr>
+                    @foreach ($tasks as $task)
+                    <tr>
+                        <td>{{ $task->id }}</td>
+                        <td>{{ $user->name }}</td>
+                        <td>{{ $task->created_at }} / {{ $task->completed_at }}</td>
+                        <td>
+                            <span class="label label-success">Выполнена</span>  <br>
+                            <span class="label label-warning">Выполнена частично</span>   <br>
+                            <span class="label label-primary">Отчет</span>  <br>
+                            <span class="label label-danger">Удалена</span>
+                        </td>
+                        <td>{{ $task->name }}</td>
+                        <td>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default">Действие</button>
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu" style="z-index: 0; position: absolute; margin-left: -15px;">
+                                    <li><a href="edituserroles/add/?user_id={{ $user->id }}&role=admin">Выполнена</a></li>
+                                    <li><a href="edituserroles/add/?user_id={{ $user->id }}&role=admin">Выполнена частично</a></li>
+                                    <li><a href="edituserroles/add/?user_id={{ $user->id }}&role=manager">Требуется доп.время</a></li>
+                                    <li><a href="edituserroles/add/?user_id={{ $user->id }}&role=worker">Заполнить отчет</a></li>
+                                    <li><a href="edituserroles/add/?user_id={{ $user->id }}&role=manager">Удалить</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody></table>
+            @endif
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
     </div>
+</div>
+
+
+
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <!--
