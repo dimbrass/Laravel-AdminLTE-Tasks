@@ -29,12 +29,13 @@ Route::get('/roles-permissions', 'UserRoleController@index');
 Route::get('/edituserroles/add', 'EditUserRolesController@add');
 Route::get('/edituserroles/del', 'EditUserRolesController@del');
 
-//Route::get('/tasks', 'TaskController@index');   
 Route::get('/tasks', 'TaskController@index');
 Route::post('/task', 'TaskController@store');
-Route::delete('/task/{task}', 'TaskController@destroy');
-Route::put('/task/{task}', 'TaskController@change');
-
+Route::get('/task/delete', 'TaskController@delete');
+Route::get('/task/complete', 'TaskController@complete');
+Route::get('/task/complete-part', 'TaskController@complete_part');
+Route::get('/task/add-time', 'TaskController@add_time');
+Route::get('/task/report', 'TaskController@report');
 
 
 

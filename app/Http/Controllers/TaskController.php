@@ -7,6 +7,7 @@ use App\Task;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Repositories\TaskRepository;
+use Illuminate\Support\Facades\DB;
 
 class TaskController extends Controller
 {
@@ -26,29 +27,18 @@ class TaskController extends Controller
     public function __construct(TaskRepository $tasks)
     {
         $this->middleware('auth');
-
         $this->tasks = $tasks;
     }
 
-    /**
-     * Отображение списка всех задач пользователя.
-     *
-     * @param  Request  $request
-     * @return Response
-     */
-    public function index(Request $request)
+    // Отображение списка всех задач пользователя.
+    public function index(Request $request, TaskRepository $tasks)
     {
-        $result = $this->tasks->forUserAllAlive($request->user(), $request);
+        $result = $tasks->forUserAllAlive($request->user(), $request);
 
         return view('tasks.index', ['tasks' => $result, 'user' => $request->user()]);
     }
 
-    /**
-     * Создание новой задачи.
-     *
-     * @param  Request  $request
-     * @return Response
-     */
+    // Создание новой задачи.
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -62,40 +52,53 @@ class TaskController extends Controller
         return redirect('/tasks');
     }
 
-    /**
-     * Уничтожить заданную задачу.
-     *
-     * @param  Request  $request
-     * @param  Task  $task
-     * @return Response
-     */
-    public function destroy(Request $request, Task $task)
+    public function delete(Request $request)
     {
-        $this->authorize('is_task_user', $task);
+        $task_id = $request->task_id;
 
-        $task->delete();
-
-        return redirect('/tasks');
+        $result = $request->user()->tasks()->find($task_id)->delete();
+/*
+        $now = date('Y-m-d G:i:s');
+        $result = DB::table('tasks')->where('id', $task_id)->update(['deleted_at' => $now]);
+*/
+        return response()->json(['act' => 'delete', 'success'=> $result, 'error'=>'error', 'task_id' => $task_id]);
     }
 
-    /**
-     * Изменить заданную задачу.
-     *
-     * @param  Request  $request
-     * @param  Task  $task
-     * @return Response
-     */
-    public function change(Request $request, Task $task)
+    // Выполнить заданную задачу.
+    public function complete(Request $request)
     {
-        $this->authorize('is_task_user', $task);
+        $task_id = $request->task_id;
+        $now = date('Y-m-d G:i:s');
+        $result = $request->user()->tasks()->where('id', $task_id)->update(['completed_at' => $now]);
 
-        if ($request->complete == 'complete') {
+        return response()->json(['act' => 'complete', 'success'=> $result, 'error'=>'error', 'task_id' => $task_id]);
+    }
 
-            $task->completed_at = date('Y-m-d G:i:s');
+    // Выполнить частично заданную задачу.
+    public function complete_part(Request $request)
+    {
+        $task_id = $request->task_id;
+        $result = $request->user()->tasks()->where('id', $task_id)->update(['completed_part' => '1']);
 
-            $task->save();
-        }
+        return response()->json(['act' => 'complete_part', 'success'=> $result, 'error'=>'error', 'task_id' => $task_id]);
+    }
 
-        return redirect('/tasks');
+    // задаче Требуется доп.время.
+    public function add_time(Request $request)
+    {
+        $task_id = $request->task_id;
+        $now = date('Y-m-d G:i:s');
+        $result = $request->user()->tasks()->where('id', $task_id)->update(['add_time' => $now]);
+
+        return response()->json(['act' => 'add_time', 'success'=> $result, 'error'=>'error', 'task_id' => $task_id]);
+    }
+
+    // Выполнить частично заданную задачу.
+    public function report(Request $request)
+    {
+        $task_id = $request->task_id;
+        $result = $request->user()->tasks()->where('id', $task_id)->update(['report_id' => '1']);
+
+        return response()->json(['act' => 'report', 'success'=> $result, 'error'=>'error', 'task_id' => $task_id]);
     }
 }
