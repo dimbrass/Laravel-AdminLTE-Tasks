@@ -87,8 +87,8 @@ class TaskController extends Controller
     public function add_time(Request $request)
     {
         $task_id = $request->task_id;
-        $now = date('Y-m-d G:i:s');
-        $result = $request->user()->tasks()->where('id', $task_id)->update(['add_time' => $now]);
+        $add_time = $request->add_time;
+        $result = $request->user()->tasks()->where('id', $task_id)->update(['add_time' => $add_time]);
 
         return response()->json(['act' => 'add_time', 'success'=> $result, 'error'=>'error', 'task_id' => $task_id]);
     }

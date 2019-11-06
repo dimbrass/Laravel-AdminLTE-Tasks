@@ -116,17 +116,26 @@
 <script>
 $(document).ready(function () {
         $.ajaxSetup({
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                contentType: "application/json; charset=utf-8"
         });
 
         $('ul.task-acts a').on('click', function (e) {
                 var link = $(this).attr('href');
-                e.preventDefault();                                             alert(link);
+                e.preventDefault();
+                if (link.substr(5, 8) == 'add-time') {
+                    var add_time = prompt("Введите дополнительную дату завершения задачи:", "2019-11-22");
+                    if (add_time > "") {
+                        link = link + "&add_time=" + add_time;
+                    }
+                }
+                                                                                   alert(add_time);
+
                 $.ajax({
                                 type: 'POST',
                                 url: link,
                                 dataType: 'json',
-                                data: { link },
+                                data: JSON.stringify({link}),
                                 success: function(data) {                       alert(data.task_id);
                                     var newlabel = '';
                                     switch (data.act) {
