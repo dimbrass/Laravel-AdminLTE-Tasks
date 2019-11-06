@@ -81,7 +81,7 @@
                         <td id="td-task-labels-{{ $task->id }}">
                             @if ($task->completed_at > '') <span class="label label-success">Выполнена</span> <br> @endif
                             @if ($task->completed_part > '') <span class="label label-warning">Выполнена частично</span> <br> @endif
-                            @if ($task->add_time > '') <span class="label label-primary">Доп.время</span> <br> @endif
+                            @if ($task->add_time > '') <span class="label label-primary">Продлить до {{ substr($task->add_time, 0, 10) }}</span> <br> @endif
                             @if ($task->report_id > 0) <span class="label label-info">Отчет</span> <br> @endif
                             @if ($task->deleted_at > '')<span class="label label-danger">Удалена</span> @endif
                         </td>
@@ -123,13 +123,15 @@ $(document).ready(function () {
         $('ul.task-acts a').on('click', function (e) {
                 var link = $(this).attr('href');
                 e.preventDefault();
+
                 if (link.substr(5, 8) == 'add-time') {
                     var add_time = prompt("Введите дополнительную дату завершения задачи:", "2019-11-22");
                     if (add_time > "") {
                         link = link + "&add_time=" + add_time;
                     }
                 }
-                                                                                   alert(add_time);
+                if (link.substr(5, 6) == 'report') {                 alert('report');
+                }
 
                 $.ajax({
                                 type: 'POST',
@@ -146,7 +148,7 @@ $(document).ready(function () {
                                             newlabel = '<span class="label label-warning">Выполнена частично</span><br>';
                                             break;
                                         case 'add_time':
-                                            newlabel = '<span class="label label-primary">Доп.время</span><br>';
+                                            newlabel = '<span class="label label-primary">Продлить до ' + data.add_time.substr(0, 22) + '</span><br>';
                                             break;
                                         case 'report':
                                             newlabel = '<span class="label label-info">Отчет</span><br>';

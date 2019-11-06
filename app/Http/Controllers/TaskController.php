@@ -90,7 +90,7 @@ class TaskController extends Controller
         $add_time = $request->add_time;
         $result = $request->user()->tasks()->where('id', $task_id)->update(['add_time' => $add_time]);
 
-        return response()->json(['act' => 'add_time', 'success'=> $result, 'error'=>'error', 'task_id' => $task_id]);
+        return response()->json(['act' => 'add_time', 'success'=> $result, 'error'=>'error', 'task_id' => $task_id, 'add_time' => $add_time]);
     }
 
     // Выполнить частично заданную задачу.
