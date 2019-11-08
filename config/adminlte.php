@@ -225,6 +225,11 @@ return [
                     'url'         => 'tasks?tasks=not-completed-out',
                     'icon_color' => 'red',
                 ],
+                [
+                    'text'       => 'Требуется доп.время',
+                    'url'         => 'tasks?tasks=add-time',
+                    'icon_color' => 'green',
+                ],
             ]
         ],
         [
@@ -338,6 +343,22 @@ return [
                     'type' => 'js',
                     'asset' => false,
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js',
+                ],
+            ],
+        ],
+        [
+            'name' => 'bootstrap-datepicker',
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css',
                 ],
             ],
         ],

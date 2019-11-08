@@ -36,3 +36,7 @@ form.role-perm-table .btn-group {
 .worker {
     background-color: #F012BE !important;
 }
+
+.pointer {
+    cursor: pointer;
+}

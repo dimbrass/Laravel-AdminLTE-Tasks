@@ -8,8 +8,6 @@
 
 @section('content')
 
-
-
 <!-- Форма новой задачи -->
 <form action="{{ url('task') }}" method="POST" class="row form-horizontal">
 {{ csrf_field() }}
@@ -34,26 +32,23 @@
                 <div class="box-tools" style="width: 100%;">
                     <div class="input-group input-group-sm hidden-xs" style="width: 100%;">
                             <label style="float: left !important">Задача: &nbsp; </label>
-                            <input type="text" name="table_search" class="form-control pull-right" style="width: 38%; float: left !important" placeholder="Search">
+                            <input type="text" name="table_search" class="form-control pull-right" style="width: 65%; float: left !important" placeholder="Search">
                             <div class="input-group-btn" style="float: left !important; margin-right: 55px">
                                 <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
                             </div>
 
-                        <div style="width: 220px; display: inline-block">
-                            <label style="float: left !important">Создана: &nbsp; </label>
-                            <input type="text" name="table_search" class="form-control pull-right" style="width: 88px; float: left !important" placeholder="2019-11-31">
+                        <form method="GET"  action="{{ url('tasks/') }}" style="width: 220px; display: inline-block">
+                            {{--                {{ csrf_field() }}     --}}
+                            @if (isset($_GET['completed']))
+                            <input type="hidden" name="completed" value="{{ $_GET['completed'] }}">
+                            @endif
+                            <label style="float: left !important">Дата: &nbsp; </label>
+                            <input type="text" name="datepicker" class="form-control pull-right datepicker" autocomplete="off"
+                                                style="width: 88px; float: left !important" placeholder="2019-11-31">
                             <div class="input-group-btn" style="float: left !important; margin-right: 55px">
                                 <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
                             </div>
-                        </div>
-
-                        <div style="width: 240px; display: inline-block">
-                            <label style="float: left !important">Выполнена: &nbsp; </label>
-                            <input type="text" name="table_search" class="form-control pull-right" style="width: 88px; float: left !important" placeholder="2019-11-31">
-                            <div class="input-group-btn" style="float: left !important; margin-right: 55px">
-                                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                                                                            <br>
                     <h3 class="box-title">Список задач</h3>
@@ -82,7 +77,8 @@
                             @if ($task->completed_at > '') <span class="label label-success">Выполнена</span> <br> @endif
                             @if ($task->completed_part > '') <span class="label label-warning">Выполнена частично</span> <br> @endif
                             @if ($task->add_time > '') <span class="label label-primary">Продлить до {{ substr($task->add_time, 0, 10) }}</span> <br> @endif
-                            @if ($task->report_id > 0) <span class="label label-info">Отчет</span> <br> @endif
+                            @if ($task->report_id > 0) <span class="label label-info link-report pointer"
+                                            data-user-id="{{ $user->id }}" data-task-id="{{ $task->id }}">Отчет</span> <br> @endif
                             @if ($task->deleted_at > '')<span class="label label-danger">Удалена</span> @endif
                         </td>
                         <td>{{ $task->name }}</td>
@@ -113,8 +109,177 @@
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="modalReport" tabindex="-1" role="dialog" aria-labelledby="modalReportLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalReportLabel"></h4>
+            </div>
+            <div class="modal-body">
+                <form class="needs-validation" novalidate="">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="firstName">First name</label>
+                            <input type="text" class="form-control" id="firstName" placeholder="" value="" required="">
+                            <div class="invalid-feedback">
+                                Valid first name is required.
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="lastName">Last name</label>
+                            <input type="text" class="form-control" id="lastName" placeholder="" value="" required="">
+                            <div class="invalid-feedback">
+                                Valid last name is required.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="username">Username</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">@</span>
+                            </div>
+                            <input type="text" class="form-control" id="username" placeholder="Username" required="">
+                            <div class="invalid-feedback" style="width: 100%;">
+                                Your username is required.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email">Email <span class="text-muted">(Optional)</span></label>
+                        <input type="email" class="form-control" id="email" placeholder="you@example.com">
+                        <div class="invalid-feedback">
+                            Please enter a valid email address for shipping updates.
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="address">Address</label>
+                        <input type="text" class="form-control" id="address" placeholder="1234 Main St" required="">
+                        <div class="invalid-feedback">
+                            Please enter your shipping address.
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>
+                        <input type="text" class="form-control" id="address2" placeholder="Apartment or suite">
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-5 mb-3">
+                            <label for="country">Country</label>
+                            <select class="custom-select d-block w-100" id="country" required="">
+                                <option value="">Choose...</option>
+                                <option>United States</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select a valid country.
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="state">State</label>
+                            <select class="custom-select d-block w-100" id="state" required="">
+                                <option value="">Choose...</option>
+                                <option>California</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please provide a valid state.
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="zip">Zip</label>
+                            <input type="text" class="form-control" id="zip" placeholder="" required="">
+                            <div class="invalid-feedback">
+                                Zip code required.
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="mb-4">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="same-address">
+                        <label class="custom-control-label" for="same-address">Shipping address is the same as my billing address</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="save-info">
+                        <label class="custom-control-label" for="save-info">Save this information for next time</label>
+                    </div>
+                    <hr class="mb-4">
+
+                    <h4 class="mb-3">Payment</h4>
+
+                    <div class="d-block my-3">
+                        <div class="custom-control custom-radio">
+                            <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked="" required="">
+                            <label class="custom-control-label" for="credit">Credit card</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input id="debit" name="paymentMethod" type="radio" class="custom-control-input" required="">
+                            <label class="custom-control-label" for="debit">Debit card</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input" required="">
+                            <label class="custom-control-label" for="paypal">PayPal</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="cc-name">Name on card</label>
+                            <input type="text" class="form-control" id="cc-name" placeholder="" required="">
+                            <small class="text-muted">Full name as displayed on card</small>
+                            <div class="invalid-feedback">
+                                Name on card is required
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="cc-number">Credit card number</label>
+                            <input type="text" class="form-control" id="cc-number" placeholder="" required="">
+                            <div class="invalid-feedback">
+                                Credit card number is required
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label for="cc-expiration">Expiration</label>
+                            <input type="text" class="form-control" id="cc-expiration" placeholder="" required="">
+                            <div class="invalid-feedback">
+                                Expiration date required
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="cc-cvv">CVV</label>
+                            <input type="text" class="form-control" id="cc-cvv" placeholder="" required="">
+                            <div class="invalid-feedback">
+                                Security code required
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="mb-4">
+                    <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
+            </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 $(document).ready(function () {
+        $('.link-report').on('click', function (e) {                   // alert(this.getAttribute('data-user-id'));
+            $('#modalReportLabel').html('{{ $task->name }}');
+            $('#modalReportLabel').html('{{ $task->name }}');
+            $('#modalReportLabel').html('{{ $task->name }}');
+            $('#modalReport').modal('show');
+        });
+
         $.ajaxSetup({
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 contentType: "application/json; charset=utf-8"
@@ -130,7 +295,9 @@ $(document).ready(function () {
                         link = link + "&add_time=" + add_time;
                     }
                 }
-                if (link.substr(5, 6) == 'report') {                 alert('report');
+                if (link.substr(5, 6) == 'report') {
+                    $('#modalReportLabel').html('{{ $task->name }}');
+                    $('#modalReport').modal('show');
                 }
 
                 $.ajax({
@@ -138,7 +305,7 @@ $(document).ready(function () {
                                 url: link,
                                 dataType: 'json',
                                 data: JSON.stringify({link}),
-                                success: function(data) {                       alert(data.task_id);
+                                success: function(data) {                      // alert(data.task_id);
                                     var newlabel = '';
                                     switch (data.act) {
                                         case 'complete':
@@ -162,95 +329,10 @@ $(document).ready(function () {
                                 error: function (msg) {
                                 alert(data.error);
                                 }
-                });                                    console.log;
+                });
         });
 });
 </script>
-
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <!--
-                <a class="navbar-brand" href="#">Navbar</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-        -->
-
-        <div class="collapse navbar-collapse" id="navbarColor03">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
                     <a class="nav-link" href="/tasks">Текущие задачи <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="/tasks?completed=1">Выполненные задачи</a>
-                </li>
-            </ul>
-            <form method="GET"  action="{{ url('tasks/') }}" class="form-inline my-2 my-lg-0  mr-3" id="sandbox-container">
-                {{--                {{ csrf_field() }}     --}}
-                @if (isset($_GET['completed']))
-                <input type="hidden" name="completed" value="{{ $_GET['completed'] }}">
-                @endif
-                <input type="text" class="form-control  mr-sm-2" name="datepicker" autocomplete="off">
-                <button class="btn btn-secondary my-2 my-sm-0 mr-sm-2" type="submit">Искать по дате</button>
-            </form>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="text" placeholder="Задача">
-                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Искать задачу</button>
-            </form>
-        </div>
-    </nav>
-
-    <!-- Текущие задачи -->
-    @if (count($tasks) > 0)
-        <div class="panel panel-default">
-            <div class="panel-heading">
-            </div>
-
-            <div class="panel-body">
-                <table class="table table-striped task-table">
-
-                    <!-- Заголовок таблицы -->
-                    <thead>
-                    <th> </th>
-                    <th>&nbsp;</th>
-                    </thead>
-
-                    <!-- Тело таблицы -->
-                    <tbody>
-                    @foreach ($tasks as $task)
-                        <tr>
-                            <!-- Имя задачи -->
-                            <td class="table-text">
-                                <div>{{ $task->name }}</div>
-                            </td>
-
-                            <td>
-                                <!-- Кнопка Удалить -->
-                                <form action="{{ url('task/'.$task->id) }}" method="POST" class="float-right">
-                                    {{ csrf_field() }}
-                                    {{ method_field('DELETE') }}
-
-                                    <button type="submit" id="delete-task-{{ $task->id }}" class="btn btn-danger">
-                                        <i class="fa fa-btn fa-trash"></i>Удалить
-                                    </button>
-                                </form>
-                                &nbsp; &nbsp; &nbsp;
-                                <!-- Кнопка Выполнена -->
-                                @if ($task->completed_at == '')
-                                    <form action="{{ url('task/'.$task->id) }}" method="POST" class="float-right mr-3">
-                                        {{ csrf_field() }}
-                                        {{ method_field('PUT') }}
-
-                                        <button name="complete" type="submit" id="put-task-{{ $task->id }}" class="btn btn-success" value="complete">
-                                            <i class="fa fa-btn fa-trash"></i>Выполнить
-                                        </button>
-                                    </form>
-                                @endif
-                            </td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    @endif
 @endsection
