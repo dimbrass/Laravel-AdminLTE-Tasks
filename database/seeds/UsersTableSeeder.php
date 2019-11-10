@@ -13,7 +13,9 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         DB::table('users')->insert([
-            'name' => 'admin',
+            'username' => 'admin',
+            'first_name' => 'Админ',
+            'last_name' => 'Админов',
             'email' => 'admin@admin.admin',
             'password' => bcrypt('admin'),
             'created_at' => '2019-10-01',
@@ -21,7 +23,9 @@ class UsersTableSeeder extends Seeder
         ]);
 
         DB::table('users')->insert([
-            'name' => 'manager',
+            'username' => 'manager',
+            'first_name' => 'Манаг',
+            'last_name' => 'Манагов',
             'email' => 'manager@manager.manager',
             'password' => bcrypt('manager'),
             'created_at' => '2019-10-01',
@@ -29,7 +33,9 @@ class UsersTableSeeder extends Seeder
         ]);
 
         DB::table('users')->insert([
-            'name' => 'worker',
+            'username' => 'worker',
+            'first_name' => 'Рабоч',
+            'last_name' => 'Рабочёв',
             'email' => 'worker@worker.worker',
             'password' => bcrypt('worker'),
             'created_at' => '2019-10-01',

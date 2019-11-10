@@ -40,3 +40,7 @@ form.role-perm-table .btn-group {
 .pointer {
     cursor: pointer;
 }
+
+input.phone {
+    width: 105px;
+}

@@ -51,4 +51,9 @@ class User extends Authenticatable
         return $this->hasMany(Task::class);
     }
 
+    // Получить все телефоны пользователя.
+    public function phones()
+    {
+        return $this->hasMany(Phone::class);
+    }
 }

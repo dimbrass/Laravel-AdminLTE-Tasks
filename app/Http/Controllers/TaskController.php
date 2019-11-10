@@ -33,9 +33,11 @@ class TaskController extends Controller
     // Отображение списка всех задач пользователя.
     public function index(Request $request, TaskRepository $tasks)
     {
-        $result = $tasks->forUserAllAlive($request->user(), $request);
+        $result = $tasks->forUserAllAlive($request);
+        $user = $request->user();
+        $phones = $user->phones();
 
-        return view('tasks.index', ['tasks' => $result, 'user' => $request->user()]);
+        return view('tasks.index', ['tasks' => $result, 'user' => $user, 'phones' => $phones]);
     }
 
     // Создание новой задачи.

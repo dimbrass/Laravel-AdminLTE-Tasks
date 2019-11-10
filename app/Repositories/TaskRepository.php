@@ -12,9 +12,9 @@ class TaskRepository
      * @param  User  $user
      * @return Collection
      */
-    public function forUserAllAlive(User $user, $request)
+    public function forUserAllAlive($request)
     {
-        $result = $user->tasks()->orderBy('created_at', 'asc');
+        $result = $request->user()->tasks()->orderBy('created_at', 'asc');
 
         if ($request->tasks == 'completed')          $result = $result->where('completed_at', '>', '')
                                                                       ->orWhere('completed_part', '>', 0);
