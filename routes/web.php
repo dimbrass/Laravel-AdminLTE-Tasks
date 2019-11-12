@@ -36,6 +36,7 @@ Route::get('/task/complete', 'TaskController@complete');
 Route::get('/task/complete-part', 'TaskController@complete_part');
 Route::get('/task/add-time', 'TaskController@add_time');
 Route::get('/task/report', 'TaskController@report');
+Route::get('/task/label-del', 'TaskController@label_del');
 
 
 

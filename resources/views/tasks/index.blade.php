@@ -31,13 +31,15 @@
             <div class="box-header">
                 <div class="box-tools" style="width: 100%;">
                     <div class="input-group input-group-sm hidden-xs" style="width: 100%;">
+                        <form method="GET"  action="{{ url('tasks/') }}">
                             <label style="float: left !important">Задача: &nbsp; </label>
                             <input type="text" name="table_search" class="form-control pull-right" style="width: 65%; float: left !important" placeholder="Search">
                             <div class="input-group-btn" style="float: left !important; margin-right: 55px">
                                 <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
                             </div>
+                        </form>
 
-                        <form method="GET"  action="{{ url('tasks/') }}" style="width: 220px; display: inline-block">
+                        <form method="GET"  action="{{ url('tasks/') }}">
                             {{--                {{ csrf_field() }}     --}}
                             @if (isset($_GET['completed']))
                             <input type="hidden" name="completed" value="{{ $_GET['completed'] }}">
@@ -75,16 +77,52 @@
                         <td>{{ $task->name }}</td>
                         <td>{{ $task->created_at }} / <br>{{ $task->completed_at }}</td>
                         <td id="td-task-labels-{{ $task->id }}">
-                            @if ($task->completed_at > '') <span class="label label-success">Выполнена</span> <br> @endif
-                            @if ($task->completed_part > '') <span class="label label-warning">Выполнена частично</span> <br> @endif
-                            @if ($task->add_time > '') <span class="label label-primary">Продлить до {{ substr($task->add_time, 0, 10) }}</span> <br> @endif
-                            @if ($task->report_id > 0) <span class="label label-info link-report pointer"
-                                                                data-task-name="{{ $task->name }}"
-                                                                data-user-firstname="{{ $user->first_name }}"
-                                                                data-user-lastname="{{ $user->last_name }}"
-                                                                data-user-phones='["0","1","2"]'
-                                                       >Отчет</span> <br> @endif                     <!-- $user->phones()->find(1)->phone  -->
-                            @if ($task->deleted_at > '')<span class="label label-danger">Удалена</span> @endif
+                            @if ($task->completed_at > '')
+                                <span class="label label-success" id="label-completed_at-{{ $task->id }}">Выполнена</span>
+                                <span class="label label-danger label-del pointer" id="label-completed_at-x-{{ $task->id }}"
+                                                            data-task-label="Выполнена"
+                                                            data-task-id="{{ $task->id }}"
+                                                            data-task-field="completed_at"
+                                                        >x</span> <br>
+                            @endif
+                            @if ($task->completed_part > '')
+                                <span class="label label-warning" id="label-completed_part-{{ $task->id }}">Выполнена частично</span>
+                                <span class="label label-danger label-del pointer" id="label-completed_part-x-{{ $task->id }}"
+                                                            data-task-label="Выполнена частично"
+                                                            data-task-id="{{ $task->id }}"
+                                                            data-task-field="completed_part"
+                                                        >x</span> <br>
+                            @endif
+                            @if ($task->add_time > '')
+                                <span class="label label-primary" id="label-add_time-{{ $task->id }}">Продлить до
+                                {{ substr($task->add_time, 0, 10) }}</span>
+                                <span class="label label-danger label-del pointer" id="label-add_time-x-{{ $task->id }}"
+                                                            data-task-label="Продлить до {{ substr($task->add_time, 0, 10) }}"
+                                                            data-task-id="{{ $task->id }}"
+                                                            data-task-field="add_time"
+                                                        >x</span> <br>
+                            @endif
+                            @if ($task->report_id > 0)
+                                <span class="label label-info link-report pointer" id="label-report_id-{{ $task->id }}"
+                                        data-task-name="{{ $task->name }}"
+                                        data-user-firstname="{{ $user->first_name }}"
+                                        data-user-lastname="{{ $user->last_name }}"
+                                        data-user-phones='["0","1","2"]'
+                                   >Отчет</span>
+                                <span class="label label-danger label-del pointer" id="label-report_id-x-{{ $task->id }}"
+                                                            data-task-label="Отчет"
+                                                            data-task-id="{{ $task->id }}"
+                                                            data-task-field="report_id"
+                                                        >x</span> <br>
+                            @endif                      <!-- $user->phones()->find(1)->phone  -->
+                            @if ($task->deleted_at > '')
+                                <span class="label label-danger" id="label-deleted_at-{{ $task->id }}">Удалена</span>
+                                <span class="label label-danger label-del pointer" id="label-deleted_at-x-{{ $task->id }}"
+                                                            data-task-label="Удалена"
+                                                            data-task-id="{{ $task->id }}"
+                                                            data-task-field="deleted_at"
+                                                        >x</span> <br>
+                            @endif
                         </td>
                         <td>
                             <div class="btn-group">
@@ -197,76 +235,6 @@
     </div>
 </div>
 
-<script>
-$(document).ready(function () {
-        $('.link-report').on('click', function (e) {
-        var arr_phones = [];
-            taskname = $(this).data('task-name');
-            firstname = $(this).data('user-firstname');
-            lastname = $(this).data('user-lastname');
-            phones = $(this).data('user-phones');            //   alert(phones[1]);
-
-
-
-            $('#modalReportH4').html(taskname);
-            $('#modalReport #firstName').val(firstname);
-            $('#modalReport #lastName').html(lastname);
-            $('#modalReport').modal('show');
-        });
-
-        $.ajaxSetup({
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                contentType: "application/json; charset=utf-8"
-        });
-
-        $('ul.task-acts a').on('click', function (e) {
-                var link = $(this).attr('href');
-                e.preventDefault();
-
-                if (link.substr(5, 8) == 'add-time') {
-                    var add_time = prompt("Введите дополнительную дату завершения задачи:", "2019-11-22");
-                    if (add_time > "") {
-                        link = link + "&add_time=" + add_time;
-                    }
-                }
-                if (link.substr(5, 6) == 'report') {
-                    $('#modalReportLabel').html('{{ $task->name }}');
-                    $('#modalReport').modal('show');
-                }
-
-                $.ajax({
-                                type: 'POST',
-                                url: link,
-                                dataType: 'json',
-                                data: JSON.stringify({link}),
-                                success: function(data) {                      // alert(data.task_id);
-                                    var newlabel = '';
-                                    switch (data.act) {
-                                        case 'complete':
-                                            newlabel = '<span class="label label-success">Выполнена</span><br>';
-                                            break;
-                                        case 'complete_part':
-                                            newlabel = '<span class="label label-warning">Выполнена частично</span><br>';
-                                            break;
-                                        case 'add_time':
-                                            newlabel = '<span class="label label-primary">Продлить до ' + data.add_time.substr(0, 22) + '</span><br>';
-                                            break;
-                                        case 'report':
-                                            newlabel = '<span class="label label-info">Отчет</span><br>';
-                                            break;
-                                        case 'delete':
-                                            newlabel = '<span class="label label-danger">Удалена</span><br>';
-                                            break;
-                                    }
-                                    $( "#td-task-labels-" + data.task_id ).prepend(newlabel);
-                                },
-                                error: function (msg) {
-                                alert(data.error);
-                                }
-                });
-        });
-});
-</script>
                     <a class="nav-link" href="/tasks">Текущие задачи <span class="sr-only">(current)</span></a>
                     <a class="nav-link" href="/tasks?completed=1">Выполненные задачи</a>
 @endsection
