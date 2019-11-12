@@ -175,8 +175,8 @@ return [
         ],
         ['header' => 'ЗАДАЧИ'],
         [
-            'text'        => 'Задачи',
-            'url'         => 'tasks',
+            'text'        => 'Все задачи',
+            'url'         => 'tasks?tasks=withTrashed',
             'label'       => 4,
             'label_color' => 'success',
         ],
@@ -191,12 +191,12 @@ return [
                 ],
                 [
                     'text'       => 'В срок',
-                    'url'         => 'tasks?tasks=completed-in',
+                    'url'         => 'in---dev/',           // 'tasks?tasks=completed-in',
                     'icon_color' => 'aqua',
                 ],
                 [
                     'text'       => 'Дольше срока',
-                    'url'         => 'tasks?tasks=completed-out',
+                    'url'         => 'in---dev/',           // 'tasks?tasks=completed-out',
                     'icon_color' => 'green',
                 ],
                 [
@@ -212,17 +212,17 @@ return [
             'submenu' => [
                 [
                     'text'       => 'Все',
-                    'url'         => 'tasks?tasks=not-completed',
+                    'url'         => 'in---dev/',           // 'tasks?tasks=not-completed',
                     'icon_color' => 'white',
                 ],
                 [
                     'text'       => 'Текущие',
-                    'url'         => 'tasks?tasks=not-completed-in',
+                    'url'         => 'in---dev/',           // 'tasks?tasks=not-completed-in',
                     'icon_color' => 'aqua',
                 ],
                 [
                     'text'       => 'Истёкшие',
-                    'url'         => 'tasks?tasks=not-completed-out',
+                    'url'         => 'in---dev/',           // 'tasks?tasks=not-completed-out',
                     'icon_color' => 'red',
                 ],
                 [
@@ -234,7 +234,7 @@ return [
         ],
         [
             'text'       => 'Отменённые',
-            'url'         => 'tasks?tasks=canceled',
+            'url'         => 'tasks?tasks=onlyTrashed',
             'icon_color' => 'yellow',
         ],
     ],

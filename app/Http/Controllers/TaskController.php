@@ -33,7 +33,7 @@ class TaskController extends Controller
     // Отображение списка всех задач пользователя.
     public function index(Request $request, TaskRepository $tasks)
     {
-        $result = $tasks->forUserAllAlive($request);
+        $result = $tasks->tasks_select($request);
         $user = $request->user();
         $phones = $user->phones();
 
@@ -60,10 +60,7 @@ class TaskController extends Controller
         $task_field = 'deleted_at';
 
         $result = $request->user()->tasks()->find($task_id)->delete();
-/*
-        $now = date('Y-m-d G:i:s');
-        $result = $request->user()->tasks()->where('id', $task_id)->update(['deleted_at' => $now]);
-*/
+
         return response()->json(['task_id' => $task_id, 'act' => 'delete', 'field' => $task_field, 'success'=> $result, 'error'=>'error']);
     }
 

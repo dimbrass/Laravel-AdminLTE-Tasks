@@ -33,7 +33,7 @@
                     <div class="input-group input-group-sm hidden-xs" style="width: 100%;">
                         <form method="GET"  action="{{ url('tasks/') }}">
                             <label style="float: left !important">Задача: &nbsp; </label>
-                            <input type="text" name="table_search" class="form-control pull-right" style="width: 65%; float: left !important" placeholder="Search">
+                            <input type="text" name="task_search" class="form-control pull-right" style="width: 65%; float: left !important" placeholder="Поиск">
                             <div class="input-group-btn" style="float: left !important; margin-right: 55px">
                                 <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
                             </div>
@@ -107,7 +107,6 @@
                                         data-task-name="{{ $task->name }}"
                                         data-user-firstname="{{ $user->first_name }}"
                                         data-user-lastname="{{ $user->last_name }}"
-                                        data-user-phones='["0","1","2"]'
                                    >Отчет</span>
                                 <span class="label label-danger label-del pointer" id="label-report_id-x-{{ $task->id }}"
                                                             data-task-label="Отчет"
@@ -186,36 +185,6 @@
                         <div class="col-md-3 mb-3">
                             <label for="phones">Телефоны</label>
                             <input type="text" class="form-control phone" id="phone" placeholder="1234 Main St" required="">
-                        </div>
-                    </div>
-
-                    <hr class="mb-4">
-
-                    <div class="mb-3">
-                        <label for="address">Адрес заказа</label>
-                        <input type="text" class="form-control" id="address" placeholder="1234 Main St" required="">
-                    </div>
-                                                          <br>
-                    <div class="mb-3">
-                        <label for="address">Телефоны заказчика</label>
-                        <input type="text" class="form-control" id="address" placeholder="1234 Main St" required="">
-                    </div>
-                                                                 <br>
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="same-address">
-                        <label class="custom-control-label" for="same-address">Заказчику выдана дисконтная карта</label>
-                    </div>
-
-                    <hr class="mb-4">
-
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="address">Комментарий исполнителя</label>
-                            <textarea class="form-control" id="comment-worker" placeholder="" name="comment-worker" rows="2"></textarea>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="address">Комментарий Заказчика</label>
-                            <textarea class="form-control" id="comment-worker" placeholder="" name="comment-worker" rows="2"></textarea>
                         </div>
                     </div>
 

@@ -25,6 +25,10 @@ Route::get('template', function() {
     return view('template');
 })->name('template')->middleware('auth');
 
+Route::get('/in---dev', function() {
+    return view('home');
+})->middleware('auth');
+
 Route::get('/roles-permissions', 'UserRoleController@index');
 Route::get('/edituserroles/add', 'EditUserRolesController@add');
 Route::get('/edituserroles/del', 'EditUserRolesController@del');

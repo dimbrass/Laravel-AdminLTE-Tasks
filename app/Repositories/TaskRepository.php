@@ -12,9 +12,17 @@ class TaskRepository
      * @param  User  $user
      * @return Collection
      */
-    public function forUserAllAlive($request)
+    public function tasks_select($request)
     {
-        $result = $request->user()->tasks()->orderBy('created_at', 'asc');
+        $tasks = $request->user()->tasks();
+        
+        if ($request->tasks == 'onlyTrashed') $tasks = $tasks->onlyTrashed();
+        if ($request->tasks == 'withTrashed') $tasks = $tasks->withTrashed();
+
+        $result = $tasks->orderBy('created_at', 'asc');
+
+        $task_search = $request->task_search;
+        if ($request->task_search > '')              $result = $result->where('name', 'like', '%'.$task_search.'%');
 
         if ($request->tasks == 'completed')          $result = $result->where('completed_at', '>', '')
                                                                       ->orWhere('completed_part', '>', 0);
